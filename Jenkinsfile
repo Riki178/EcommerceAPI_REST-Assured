@@ -1,38 +1,39 @@
 pipeline {
-
     agent any
-
-    tools {
-        jdk 'JDK-21'
-        maven 'Maven-3'
-    }
 
     stages {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/YOUR_USERNAME/EcommerceAPI.git'
+                git branch: 'master',
+                    url: 'https://github.com/Riki178/EcommerceAPI_REST-Assured.git'
             }
         }
 
-        stage('Run API Tests') {
+        stage('Build') {
             steps {
-                bat 'mvn clean test'
+                bat 'mvn clean compile'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                bat 'mvn test'
             }
         }
     }
 
     post {
         always {
-            echo 'API test execution completed'
+            echo 'Test execution completed'
         }
 
         success {
-            echo 'API Tests Passed'
+            echo 'Tests passed successfully'
         }
 
         failure {
-            echo 'API Tests Failed'
+            echo 'Tests failed'
         }
     }
 }
